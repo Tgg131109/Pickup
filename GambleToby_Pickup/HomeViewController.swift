@@ -32,10 +32,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         performSegue(withIdentifier: "search_segue", sender: self)
     }
     
-//    func getSchools() -> [School] {
-//        return schools
-//    }
-    
     // MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -21,6 +21,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var tagNumber = ""
     var registeredStudents = [Student]()
     var foundSchoolName = ""
+    var foundSchoolCode = ""
     var foundSchoolAddress = ""
     var tokenVerified = false
     
@@ -116,6 +117,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         // Look for school in json object created above.
                         for schoolObj in jsonObj {
                             guard let schoolName = schoolObj["school_name"] as? String,
+                                  let schoolCode = schoolObj["code"] as? String,
                                   let dataObj = schoolObj["data"] as? [[String: Any]]
                             else {
                                 print("Error retreiving school data")
@@ -125,6 +127,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             // Action if provided school is found.
                             if schoolName == foundSchoolName {
                                 print("Found \(schoolName)")
+                                foundSchoolCode = schoolCode
                                 // Look for school token data in data object created from schoolObj.
                                 for object in dataObj {
                                     guard let token = object["token"] as? String,
@@ -144,7 +147,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                         for student in students {
                                             guard let fName = student["first_name"] as? String,
                                                   let lName = student["last_name"] as? String,
-                                                  let grade = student["grade"] as? String
+                                                  let grade = student["grade"] as? String,
+                                                  let sId = student["id"] as? String
                                             else {
                                                 print("Error retreiving student data")
                                                 return
@@ -153,7 +157,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                             print("\(fName) \(lName) | \(grade)")
                                             
                                             // Create new Student object and add to registeredStudents array.
-                                            registeredStudents.append(Student(firstName: fName, lastName: lName, gradeLvl: grade))
+                                            registeredStudents.append(Student(firstName: fName, lastName: lName, gradeLvl: grade, studentId: sId))
                                         }
                                         
                                         break
@@ -170,10 +174,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         
                         if tokenVerified {
                             // Create new School object and add to schools array.
-                            school = School(schoolName: foundSchoolName, schoolAddress: foundSchoolAddress, tagNumber: tagNumber, registeredStudents: registeredStudents)
+                            school = School(schoolName: foundSchoolName, schoolCode: foundSchoolCode, schoolAddress: foundSchoolAddress, tagNumber: tagNumber, registeredStudents: registeredStudents)
                         }
-
-    //                    schools.append(School(schoolName: foundSchoolName, schoolAddress: foundSchoolAddress, registeredStudents: registeredStudents))
                     }
                 }
                 catch {

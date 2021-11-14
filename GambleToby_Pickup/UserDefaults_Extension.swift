@@ -10,7 +10,6 @@ import Foundation
 extension UserDefaults {
     // Save UIColor as data object.
     func set(schools: [School], forKey key: String) {
-        print("Saving School")
         do {
             // Convert UIColor object into data object via archiving.
             let binaryData = try NSKeyedArchiver.archivedData(withRootObject: schools, requiringSecureCoding: false)
@@ -24,7 +23,6 @@ extension UserDefaults {
     
     // Get UIColor form save UserDefaults with a key.
     func school(forKey key: String) -> [School]? {
-        print("Getting Schools")
         if let binaryData = data(forKey: key) {
             do {
                 if let schools = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(binaryData) as? [School] {

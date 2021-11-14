@@ -6,21 +6,21 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="19454"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
+        <!--Home Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="GambleToby_Pickup_WatchKit_Extension">
+                <controller id="AgC-eL-Hgc" customClass="HomeInterfaceController" customModule="GambleToby_Pickup_WatchKit_Extension">
                     <items>
-                        <label alignment="left" text="Please select your school" numberOfLines="0" id="Dvv-Ee-D59"/>
+                        <label width="136" alignment="left" text="Select school" numberOfLines="0" id="Dvv-Ee-D59"/>
                         <table alignment="left" id="hfh-au-G3E">
                             <items>
-                                <tableRow identifier="row_controller_1" id="0EF-5K-qPg" customClass="SchoolRowController" customModule="GambleToby_Pickup_WatchKit_Extension">
+                                <tableRow identifier="row_controller_1" id="0EF-5K-qPg" customClass="RowController" customModule="GambleToby_Pickup_WatchKit_Extension">
                                     <group key="rootItem" width="1" alignment="left" id="5KD-c0-keI">
                                         <items>
-                                            <label alignment="left" text="School Name" id="BfW-1x-5Fd"/>
+                                            <label width="1" height="1" alignment="left" text="School Name" textAlignment="center" id="BfW-1x-5Fd"/>
                                         </items>
                                         <connections>
-                                            <segue destination="LI9-GQ-0P8" kind="push" identifier="students_segue" id="WKe-LG-9oz"/>
+                                            <segue destination="LI9-GQ-0P8" kind="push" identifier="school_segue" id="WKe-LG-9oz"/>
                                         </connections>
                                     </group>
                                     <connections>
@@ -69,30 +69,67 @@
             </objects>
             <point key="canvasLocation" x="468" y="345"/>
         </scene>
-        <!--Interface Controller-->
+        <!--School Interface Controller-->
         <scene sceneID="QJk-8B-Akt">
             <objects>
-                <controller id="LI9-GQ-0P8" customClass="InterfaceController" customModule="GambleToby_Pickup_WatchKit_Extension">
+                <controller id="LI9-GQ-0P8" customClass="SchoolInterfaceController" customModule="GambleToby_Pickup_WatchKit_Extension">
                     <items>
-                        <label alignment="left" text="School Name" id="xRO-jz-RIY"/>
+                        <label alignment="left" text="Select students" id="xRO-jz-RIY"/>
                         <table alignment="left" id="l8I-QX-VD5">
                             <items>
-                                <tableRow id="o3w-By-CfW">
+                                <tableRow identifier="row_controller_1" id="o3w-By-CfW" customClass="RowController" customModule="GambleToby_Pickup_WatchKit_Extension">
                                     <group key="rootItem" width="1" alignment="left" id="jqm-K2-mi0">
                                         <items>
-                                            <label alignment="left" text="Student Name" id="Ylc-hh-Dsh"/>
+                                            <label width="0.80000000000000004" height="1" alignment="left" verticalAlignment="center" text="Student Name" textAlignment="left" numberOfLines="0" id="Ylc-hh-Dsh"/>
+                                            <imageView alignment="right" verticalAlignment="center" hidden="YES" image="checkmark.circle.fill" catalog="system" id="9uE-hC-WgO">
+                                                <color key="tintColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </imageView>
                                         </items>
                                     </group>
+                                    <connections>
+                                        <outlet property="selectedImg" destination="9uE-hC-WgO" id="75A-H0-2dV"/>
+                                        <outlet property="titleLbl" destination="Ylc-hh-Dsh" id="bY8-l9-lcg"/>
+                                    </connections>
                                 </tableRow>
                             </items>
                         </table>
-                        <button width="1" alignment="left" title="Send Request" id="m6Q-9T-O0i">
+                        <button width="1" alignment="left" verticalAlignment="bottom" title="Send Request" enabled="NO" id="m6Q-9T-O0i">
                             <color key="backgroundColor" red="0.96841138599999999" green="0.72135162269999997" blue="0.20872684790000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <segue destination="E66-k7-4cf" kind="modal" identifier="request_segue" id="Us3-KF-XOo"/>
+                            </connections>
                         </button>
                     </items>
+                    <connections>
+                        <outlet property="requestBtn" destination="m6Q-9T-O0i" id="nd3-2p-lqM"/>
+                        <outlet property="tableView" destination="l8I-QX-VD5" id="Kk0-Uo-48B"/>
+                    </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="468" y="32"/>
         </scene>
+        <!--Request Sent-->
+        <scene sceneID="T0i-cS-OiU">
+            <objects>
+                <controller title="Request Sent" id="E66-k7-4cf" customClass="RequestInterfaceController" customModule="GambleToby_Pickup_WatchKit_Extension">
+                    <items>
+                        <label width="1" alignment="left" verticalAlignment="bottom" text="Your request has been sent to your selected school. You will be notified when the request is processed." textAlignment="left" numberOfLines="0" id="SIc-y2-waa"/>
+                        <button width="1" alignment="left" verticalAlignment="bottom" title="Done" id="NLE-gX-x66">
+                            <color key="backgroundColor" red="0.96841138599999999" green="0.72135162269999997" blue="0.20872684790000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <action selector="doneTapped" destination="E66-k7-4cf" id="AD3-gj-BiJ"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="infoLbl" destination="SIc-y2-waa" id="3SM-p9-Des"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="721" y="31.5"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
+    </resources>
 </document>

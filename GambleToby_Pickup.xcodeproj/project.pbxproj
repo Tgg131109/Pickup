@@ -17,7 +17,7 @@
 		3A7976ED2734BB8B0070E684 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A7976EB2734BB8B0070E684 /* Interface.storyboard */; };
 		3A7976EF2734BB8C0070E684 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A7976EE2734BB8C0070E684 /* Assets.xcassets */; };
 		3A7976F52734BB8C0070E684 /* GambleToby_Pickup WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A7976F42734BB8C0070E684 /* GambleToby_Pickup WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3A7976FA2734BB8C0070E684 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7976F92734BB8C0070E684 /* InterfaceController.swift */; };
+		3A7976FA2734BB8C0070E684 /* HomeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7976F92734BB8C0070E684 /* HomeInterfaceController.swift */; };
 		3A7976FC2734BB8C0070E684 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7976FB2734BB8C0070E684 /* ExtensionDelegate.swift */; };
 		3A7976FE2734BB8C0070E684 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7976FD2734BB8C0070E684 /* NotificationController.swift */; };
 		3A7977002734BB8C0070E684 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7976FF2734BB8C0070E684 /* ComplicationController.swift */; };
@@ -34,6 +34,8 @@
 		3A79772A2738B5110070E684 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7977292738B5110070E684 /* RequestViewController.swift */; };
 		3A79772B2738BF850070E684 /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A797723273819F90070E684 /* School.swift */; };
 		3A79772C2738BF900070E684 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A79772527381A030070E684 /* Student.swift */; };
+		3A8471D52740229300B60371 /* SchoolInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8471D42740229300B60371 /* SchoolInterfaceController.swift */; };
+		3A8471D92740566B00B60371 /* RequestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8471D82740566B00B60371 /* RequestInterfaceController.swift */; };
 		3AC15809273F043400ECD9BA /* UserDefaults_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,7 +94,7 @@
 		3A7976EC2734BB8B0070E684 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		3A7976EE2734BB8C0070E684 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A7976F42734BB8C0070E684 /* GambleToby_Pickup WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "GambleToby_Pickup WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A7976F92734BB8C0070E684 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		3A7976F92734BB8C0070E684 /* HomeInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterfaceController.swift; sourceTree = "<group>"; };
 		3A7976FB2734BB8C0070E684 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		3A7976FD2734BB8C0070E684 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		3A7976FF2734BB8C0070E684 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,8 @@
 		3A79772527381A030070E684 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 		3A797727273888230070E684 /* SchoolViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolViewController.swift; sourceTree = "<group>"; };
 		3A7977292738B5110070E684 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
+		3A8471D42740229300B60371 /* SchoolInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolInterfaceController.swift; sourceTree = "<group>"; };
+		3A8471D82740566B00B60371 /* RequestInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterfaceController.swift; sourceTree = "<group>"; };
 		3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults_Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,7 +190,9 @@
 		3A7976F82734BB8C0070E684 /* GambleToby_Pickup WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				3A7976F92734BB8C0070E684 /* InterfaceController.swift */,
+				3A7976F92734BB8C0070E684 /* HomeInterfaceController.swift */,
+				3A8471D42740229300B60371 /* SchoolInterfaceController.swift */,
+				3A8471D82740566B00B60371 /* RequestInterfaceController.swift */,
 				3A7976FB2734BB8C0070E684 /* ExtensionDelegate.swift */,
 				3A7976FD2734BB8C0070E684 /* NotificationController.swift */,
 				3A7976FF2734BB8C0070E684 /* ComplicationController.swift */,
@@ -359,12 +365,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A8471D52740229300B60371 /* SchoolInterfaceController.swift in Sources */,
 				3A7976FE2734BB8C0070E684 /* NotificationController.swift in Sources */,
+				3A8471D92740566B00B60371 /* RequestInterfaceController.swift in Sources */,
 				3A79772C2738BF900070E684 /* Student.swift in Sources */,
 				3A7977002734BB8C0070E684 /* ComplicationController.swift in Sources */,
 				3A7976FC2734BB8C0070E684 /* ExtensionDelegate.swift in Sources */,
 				3A79772B2738BF850070E684 /* School.swift in Sources */,
-				3A7976FA2734BB8C0070E684 /* InterfaceController.swift in Sources */,
+				3A7976FA2734BB8C0070E684 /* HomeInterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

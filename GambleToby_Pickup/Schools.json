@@ -1,38 +1,38 @@
-[{"school_name":"Hillpoint Elementary",
+[{"school_name":"Hillpoint Elementary", "code":"HES1234",
     "data": [
         {"token":"ABC#123","tag":"024",
             "students": [
-            {"first_name":"Tristan","last_name":"Gamble","grade":"4"},
-            {"first_name":"Kyler","last_name":"Gamble","grade":"3"}
+            {"first_name":"Tristan","last_name":"Gamble","grade":"4","id":"10000001"},
+            {"first_name":"Kyler","last_name":"Gamble","grade":"3","id":"10000002"}
         ]},
         {"token":"XYZ@321","tag":"143",
             "students": [
-            {"first_name":"Addy","last_name":"Walker","grade":"2"},
-            {"first_name":"Ella","last_name":"Walker","grade":"K"}
+            {"first_name":"Addy","last_name":"Walker","grade":"2","id":"10000004"},
+            {"first_name":"Ella","last_name":"Walker","grade":"K","id":"10000006"}
         ]}
  ]},
- {"school_name":"King's Fork Middle School",
+ {"school_name":"King's Fork Middle School", "code":"KFMS1234",
      "data": [
      {"token":"DEF#456","tag":"023",
          "students": [
-         {"first_name":"Samiyah","last_name":"Gamble","grade":"7"}
+         {"first_name":"Samiyah","last_name":"Gamble","grade":"7","id":"10000003"}
      ]},
      {"token":"UVW@654","tag":"219",
          "students": [
-         {"first_name":"Tristan","last_name":"Gamble","grade":"6"}
+         {"first_name":"Tristan","last_name":"Gamble","grade":"6","id":"10000008"}
      ]}
   ]},
-  {"school_name":"King's Fork High School",
+  {"school_name":"King's Fork High School", "code":"KFHS1234",
       "data": [
       {"token":"GHI#789","tag":"089",
           "students": [
-          {"first_name":"Toby","last_name":"Gamble","grade":"10"},
-          {"first_name":"Kirsten","last_name":"Gamble","grade":"12"}
+          {"first_name":"Toby","last_name":"Gamble","grade":"10","id":"10000009"},
+          {"first_name":"Kirsten","last_name":"Gamble","grade":"12","id":"10000007"}
       ]},
       {"token":"RST@987","tag":"047",
           "students": [
-          {"first_name":"Tristan","last_name":"Gamble","grade":"4"},
-          {"first_name":"Kyler","last_name":"Gamble","grade":"3"}
+          {"first_name":"Tristan","last_name":"Gamble","grade":"4","id":"10000005"},
+          {"first_name":"Kyler","last_name":"Gamble","grade":"3","id":"10000011"}
       ]}
    ]}
 ]

@@ -10,7 +10,7 @@ import Foundation
 import WatchConnectivity
 import UIKit
 
-class InterfaceController: WKInterfaceController, WCSessionDelegate {
+class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
     
     @IBOutlet weak var instructionLbl: WKInterfaceLabel!
     @IBOutlet weak var tableView: WKInterfaceTable!
@@ -31,6 +31,12 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         // Configure interface objects here.
+        
+//        _ = NotificationCenter.default.addObserver(forName: NSNotification.Name.init(rawValue: "DONE"), object: nil, queue: OperationQueue.main) { (notification) in
+//            print("Notified")
+//            self.popToRootController()
+//                self.becomeCurrentPage()
+//        }
     }
     
     override func willActivate() {
@@ -82,11 +88,11 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                             self.tableView.setNumberOfRows(self.schools.count, withRowType: "row_controller_1")
 
                             // Hide titleLbl.
-                            self.instructionLbl.setHidden(true)
+                            self.instructionLbl.setText("Select your school")
 
                             // Set table row images using data from teams array.
                             for (index, school) in self.schools.enumerated() {
-                                let row = self.tableView.rowController(at: index) as! SchoolRowController
+                                let row = self.tableView.rowController(at: index) as! RowController
 
                                 row.titleLbl.setText(school.schoolName)
                             }
@@ -100,16 +106,18 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> Any? {
-        // Pass data to DetailsInterfaceController on table row tap.
-//        if segueIdentifier == "details_segue" {
-//            return ["team": teams[rowIndex]]
-//        }
-//
+        // Pass data to SchoolInterfaceController on table row tap.
+        if segueIdentifier == "school_segue" {
+            return ["school": schools[rowIndex]]
+        }
+
         return nil
     }
 }
 
-class SchoolRowController: NSObject {
-//    @IBOutlet weak var imageView: WKInterfaceImage!
+class RowController: NSObject {
     @IBOutlet weak var titleLbl: WKInterfaceLabel!
+    @IBOutlet weak var selectedImg: WKInterfaceImage!
+    
+    var isSelected = false
 }
