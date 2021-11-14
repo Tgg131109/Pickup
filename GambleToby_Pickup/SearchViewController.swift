@@ -25,15 +25,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var foundSchoolAddress = ""
     var tokenVerified = false
     
-    private enum SegueID: String {
-        case showDetail
-        case showAll
-    }
-    
-    private enum CellReuseID: String {
-        case resultCell
-    }
-    
     private var places: [MKMapItem]? {
         didSet {
             tableView.reloadData()
@@ -59,16 +50,22 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        // Set location manager delegate.
         locationManager.delegate = self
         
+        // Set suggestionController style and delegate.
+        // This will be the view used to show suggested results as the user types in the search bar.
         suggestionController = SuggestionsTableViewController(style: .grouped)
         suggestionController.tableView.delegate = self
         
+        // Add suggestionController to search controller and set it is the result updater.
         searchController = UISearchController(searchResultsController: suggestionController)
         searchController.searchResultsUpdater = suggestionController
         
-        let name = UIApplication.willEnterForegroundNotification
-        foregroundRestorationObserver = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: { [unowned self] (_) in
+        // If user needs to navigate to Settings to enable location services, observe when app returns to foreground and request location.
+        let foregroundNotification = UIApplication.willEnterForegroundNotification
+        
+        foregroundRestorationObserver = NotificationCenter.default.addObserver(forName: foregroundNotification, object: nil, queue: nil, using: { [unowned self] (_) in
             // Get a new location when returning from Settings to enable location services.
             self.requestLocation()
         })
@@ -83,12 +80,10 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Keep the search bar visible at all times.
         navigationItem.hidesSearchBarWhenScrolling = false
         
+        // Set searchController delegate.
         searchController.searchBar.delegate = self
-        
-        /*
-         Search is presenting a view controller, and needs the presentation context to be defined by a controller in the
-         presented view controller hierarchy.
-         */
+ 
+        // Define presentation context from a view in controller hierarchy since the search is presenting a view controller.
         definesPresentationContext = true
     }
     
@@ -101,6 +96,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func checkToken() {
         if !tokenTF.hasText {
             print("Empty field")
+            // An alert will be presented here.
         } else {
             // Get path to Schools.json file.
             if let path = Bundle.main.path(forResource: "Schools", ofType: ".json") {
@@ -125,9 +121,11 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             }
                             
                             // Action if provided school is found.
+                            // foundSchoolName is set in the tableView cellForRowAt method.
                             if schoolName == foundSchoolName {
-                                print("Found \(schoolName)")
+                                // Set foundSchoolCode value equal to retreived school code.
                                 foundSchoolCode = schoolCode
+                                
                                 // Look for school token data in data object created from schoolObj.
                                 for object in dataObj {
                                     guard let token = object["token"] as? String,
@@ -140,9 +138,10 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                     
                                     // Action if provided token is found.
                                     if token == tokenTF.text {
-                                        print("Found \(token)")
+                                        // Set tokenVerified value to true and tagNumber value equal to retreived tag number.
                                         tokenVerified = true
                                         tagNumber = tagNum
+                                        
                                         // Look for student data in student array from dataObj.
                                         for student in students {
                                             guard let fName = student["first_name"] as? String,
@@ -173,7 +172,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         }
                         
                         if tokenVerified {
-                            // Create new School object and add to schools array.
+                            // Create new School object to be sent to ResultsViewController where it will be saved to UserDefaults.
                             school = School(schoolName: foundSchoolName, schoolCode: foundSchoolCode, schoolAddress: foundSchoolAddress, tagNumber: tagNumber, registeredStudents: registeredStudents)
                         }
                     }
@@ -184,6 +183,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
+    
+    // MARK: - Search Functions
     
     /// - Parameter suggestedCompletion: A search completion provided by `MKLocalSearchCompleter` when tapping on a search completion table row
     private func search(for suggestedCompletion: MKLocalSearchCompletion) {
@@ -237,7 +238,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CellReuseID.resultCell.rawValue, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
         
         if let mapItem = places?[indexPath.row] {
             foundSchoolName = mapItem.name!
@@ -252,8 +253,10 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var header = NSLocalizedString("SEARCH_RESULTS", comment: "Standard result text")
+        
         if let city = currentPlacemark?.locality {
             let templateString = NSLocalizedString("SEARCH_RESULTS_LOCATION", comment: "Search result text with city")
+            
             header = String(format: templateString, city)
         }
         

@@ -16,7 +16,7 @@ class RequestInterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        // Get dictionary data from context passed from InterfaceController.
+        // Get dictionary data from context passed from SchoolInterfaceController.
         let dict = context as? NSDictionary
         
         if dict != nil {
@@ -24,12 +24,15 @@ class RequestInterfaceController: WKInterfaceController {
             let schoolName = dict!["schoolName"] as! String
             let students = dict!["students"] as! [Student]
             
+            // Create string to contain a list of student names and grade levels to be displayed.
             var studentsStr = ""
             
+            // Add each student to studentsStr.
             for student in students {
                 studentsStr += "\n\(student.fullName) | \(student.gradeLvl)"
             }
             
+            // Set infoLbl text using schoolName and studentsStr created above.
             infoLbl.setText("Your request has been sent to \(schoolName) for the following students:\n\(studentsStr)\n\nYou will be notified when the request is processed.\n")
         }
     }
@@ -45,13 +48,7 @@ class RequestInterfaceController: WKInterfaceController {
     }
     
     @IBAction func doneTapped() {
-        print("Done")
-        
-//        NotificationCenter.default.post(name: "Done", object: self)
-//        NotificationCenter.default.post(name: NSNotification.Name.init(rawValue: "DONE"), object: self)
-//        self.popToRootController()
         self.dismiss()
-//        self.popToRootController()
     }
 
 }

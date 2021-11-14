@@ -30,13 +30,8 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        // Configure interface objects here.
         
-//        _ = NotificationCenter.default.addObserver(forName: NSNotification.Name.init(rawValue: "DONE"), object: nil, queue: OperationQueue.main) { (notification) in
-//            print("Notified")
-//            self.popToRootController()
-//                self.becomeCurrentPage()
-//        }
+        // Configure interface objects here.
     }
     
     override func willActivate() {
@@ -69,28 +64,28 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
                 DispatchQueue.main.async {
                     // Extract data object.
                     if let data = replyData["schools"] as? Data {
-                        // Set unarchiver class to decode the data back to a Team object.
+                        // Set unarchiver classes to decode the data back to a Team object.
                         NSKeyedUnarchiver.setClass(School.self, forClassName: "Schools")
                         NSKeyedUnarchiver.setClass(Student.self, forClassName: "Students")
 
                         do {
-                            // Get Team objects from replyData using NSKeyedUnarchiver and data created above.
+                            // Get array of School objects from replyData using NSKeyedUnarchiver and data created above.
                             guard let schoolObjects = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [School] else {
                                 fatalError("Error retreiving team data.")
                             }
 
-                            // Add each retreived team to teams array.
+                            // Add each retreived School object to schools array.
                             for school in schoolObjects {
                                 self.schools.append(school)
                             }
 
-                            // Set number of rows equal to number of teams in teams array.
+                            // Set number of rows equal to number of teams in schools array.
                             self.tableView.setNumberOfRows(self.schools.count, withRowType: "row_controller_1")
 
-                            // Hide titleLbl.
+                            // Set instructionLbl text.
                             self.instructionLbl.setText("Select your school")
 
-                            // Set table row images using data from teams array.
+                            // Set table row titles using data from schools array.
                             for (index, school) in self.schools.enumerated() {
                                 let row = self.tableView.rowController(at: index) as! RowController
 
@@ -106,7 +101,7 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> Any? {
-        // Pass data to SchoolInterfaceController on table row tap.
+        // Pass selected school to SchoolInterfaceController on table row tap.
         if segueIdentifier == "school_segue" {
             return ["school": schools[rowIndex]]
         }

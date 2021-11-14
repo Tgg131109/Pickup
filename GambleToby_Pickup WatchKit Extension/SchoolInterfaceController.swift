@@ -23,22 +23,22 @@ class SchoolInterfaceController: WKInterfaceController {
         
         requestBtn.setBackgroundColor(.gray)
         
-        // Get dictionary data from context passed from InterfaceController.
+        // Get dictionary data from context passed from HomeInterfaceController.
         let dict = context as? NSDictionary
         
         if dict != nil {
             // Get data from dictionary created above.
             let data = dict!["school"] as! School
             
-            // Update view with Team object data from data created above.
+            // Update view with School object data from data created above.
             schoolName = data.schoolName
             setTitle(schoolName)
             students = data.registeredStudents
             
-            // Set number of rows equal to number of teams in teams array.
+            // Set number of rows equal to number of students in students array.
             self.tableView.setNumberOfRows(self.students.count, withRowType: "row_controller_1")
 
-            // Set table row images using data from teams array.
+            // Set table row title using data from students array.
             for (index, student) in self.students.enumerated() {
                 let row = self.tableView.rowController(at: index) as! RowController
 
@@ -51,6 +51,7 @@ class SchoolInterfaceController: WKInterfaceController {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         
+        // Return to HomeInterfaceController if navigating from RequestInterfaceController.
         if requestSent {
             popToRootController()
         }
@@ -66,6 +67,7 @@ class SchoolInterfaceController: WKInterfaceController {
         
         row.isSelected.toggle()
         
+        // Show/hide checkmark image and add/remove student based on row selection status.
         if row.isSelected {
             studentsToRequest.append(students[rowIndex])
             row.selectedImg.setHidden(false)
@@ -77,6 +79,7 @@ class SchoolInterfaceController: WKInterfaceController {
             row.selectedImg.setHidden(true)
         }
         
+        // Enable/disable requestBtn and update requestBtn color based on row selection status.
         if studentsToRequest.isEmpty {
             requestBtn.setEnabled(false)
             requestBtn.setBackgroundColor(.gray)

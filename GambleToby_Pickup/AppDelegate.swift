@@ -72,15 +72,16 @@ extension AppDelegate: WCSessionDelegate{
         DispatchQueue.main.async {
             // Check that received message is not nil and contains a key/value pair.
             if (message["getSchools"] as? Bool) != nil{
-                // Set archiver class name to Team class using NSKeyedArchiver.
-                // The archiver will use this class to determine how to arhcive the Data object.
+                // Set archiver class name to School class for "Schools" string using NSKeyedArchiver.
+                // Set archiver class name to Student class for "Students" string using NSKeyedArchiver.
+                // The archiver will use these classes to determine how to arhcive the Data objects.
                 NSKeyedArchiver.setClassName("Schools", for: School.self)
                 NSKeyedArchiver.setClassName("Students", for: Student.self)
                 
-                if let savedSchools: [School] = UserDefaults.standard.school(forKey: "savedSchools") {
+                if let savedSchools = UserDefaults.standard.school(forKey: "savedSchools") {
                     print(savedSchools.count)
 
-                    // Convert Team object created above into a Data object using the archivedData method.
+                    // Convert array of School objects created above into a Data object using the archivedData method.
                     guard let data = try? NSKeyedArchiver.archivedData(withRootObject: savedSchools, requiringSecureCoding: false)
                         else{fatalError("Error")}
 
@@ -90,25 +91,6 @@ extension AppDelegate: WCSessionDelegate{
                 } else {
                     print("There was an error sending data to watch")
                 }
-                
-//                // Create an array of Team objects to send to watch.
-//                if let navigation = UIApplication.shared.windows.first?.rootViewController as? UINavigationController {
-//                    if let viewController = navigation.topViewController as? HomeViewController {
-//                        print(viewController.schools.count)
-//                        // Convert Team object created above into a Data object using the archivedData method.
-//                        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: viewController.schools, requiringSecureCoding: false)
-//                            else{fatalError("Error")}
-//
-//                        // Send response to watch with a dictionary containing the Data object created above.
-//                        // This will be unarchived on the receiving end.
-//                        replyHandler(["schools": data])
-////                        if viewController.schools != nil {
-////
-////                        } else {
-////                            print("Error retrieving schools from HomeViewController")
-////                        }
-//                    }
-//                }
             }
         }
     }

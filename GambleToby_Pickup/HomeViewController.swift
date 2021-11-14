@@ -18,9 +18,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        // Check for user saved theme colors and set cell elements colors the user's preferences.
+        // Uncomment the following lines to clear UserDefaults data.
+//        UserDefaults.standard.removeObject(forKey: "savedSchools")
+//        UserDefaults.standard.synchronize()
+        
+        // Set schools array equal to user's saved schools if they exist.
         if let savedSchools = UserDefaults.standard.school(forKey: "savedSchools") {
             schools = savedSchools
         }
@@ -41,6 +44,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "schoolCell", for: indexPath)
         
+        // Configure cell.
         var config = cell.defaultContentConfiguration()
         config.text = schools[indexPath.row].schoolName
         
@@ -52,10 +56,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Deselect row for visual purposes.
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        // Get selected school from schools array.
         school = schools[indexPath.row]
-        
+        // Navigate to SchoolViewController.
         performSegue(withIdentifier: "student_segue", sender: self)
     }
     
@@ -63,14 +68,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
+        // Action if navigating to SchoolViewController.
         if let destination = segue.destination as? SchoolViewController {
-            // Send selected current color set and app appearance to SettingsViewController on tap.
+            // Send selected school to SchoolViewController.
             destination.school = self.school
         }
         
+        // Action if navigating to SearchViewController.
         if let destination = segue.destination as? SearchViewController {
-            // Send selected current color set and app appearance to SettingsViewController on tap.
+            // Send selected schools array to SchoolViewController.
             destination.schools = self.schools
         }
     }
