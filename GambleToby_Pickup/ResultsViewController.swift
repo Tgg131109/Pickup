@@ -10,6 +10,7 @@ import UIKit
 class ResultsViewController: UIViewController {
 
     @IBOutlet weak var statusLbl: UILabel!
+    @IBOutlet weak var doneBtn: UIButton!
     
     var school: School?
     var registeredStudents = [Student]()
@@ -19,6 +20,11 @@ class ResultsViewController: UIViewController {
         super.viewDidLoad()
 
         self.navigationItem.setHidesBackButton(true, animated: true)
+        
+        // Style doneBtn.
+        doneBtn.layer.shadowOpacity = 0.2
+        doneBtn.layer.shadowRadius = 2
+        doneBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
         
         if let schoolName: String = school?.schoolName, let tagNum: String = school?.tagNumber {
             // Create string to contain a list of student names and grade levels to be displayed.

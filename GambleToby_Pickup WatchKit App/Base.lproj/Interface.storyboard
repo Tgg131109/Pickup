@@ -6,10 +6,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="19454"/>
     </dependencies>
     <scenes>
-        <!--Home Interface Controller-->
+        <!--Pickup-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="HomeInterfaceController" customModule="GambleToby_Pickup_WatchKit_Extension">
+                <controller title="Pickup" id="AgC-eL-Hgc" customClass="HomeInterfaceController" customModule="GambleToby_Pickup_WatchKit_Extension">
                     <items>
                         <label width="136" alignment="left" text="Select school" numberOfLines="0" id="Dvv-Ee-D59"/>
                         <table alignment="left" id="hfh-au-G3E">

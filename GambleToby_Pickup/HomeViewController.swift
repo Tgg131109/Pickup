@@ -12,12 +12,30 @@ import CoreLocation
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var addBtn: UIButton!
     
     var schools = [School]()
     var school: School?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.backgroundColor = .systemBlue.withAlphaComponent(0.6)
+
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
+        navigationController?.navigationBar.tintColor = .systemYellow
+        
+        // Style addBtn.
+        addBtn.layer.shadowOpacity = 0.2
+        addBtn.layer.shadowRadius = 2
+        addBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
         
         // Uncomment the following lines to clear UserDefaults data.
 //        UserDefaults.standard.removeObject(forKey: "savedSchools")
@@ -47,10 +65,30 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Configure cell.
         var config = cell.defaultContentConfiguration()
         config.text = schools[indexPath.row].schoolName
+        config.textProperties.alignment = .center
+        config.textProperties.font = .systemFont(ofSize: 22, weight: .medium)
+        config.textProperties.color = .systemBackground
+        
+        // Style cell.
+        cell.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.6)
+        cell.layer.borderColor = UIColor.systemBackground.cgColor
+        cell.layer.borderWidth = 10
+        cell.layer.cornerRadius = 40
+        cell.layer.shadowColor = UIColor.systemRed.cgColor
+
+//        cell.layer.shadowOpacity = 0.2
+////        addBtn.layer.shadowPath = UIBezierPath(rect: addBtn.bounds).cgPath
+////        addBtn.layer.shadowPath = UIBezierPath(roundedRect: addBtn.bounds, cornerRadius: addBtn.layer.cornerRadius).cgPath
+//        cell.layer.shadowRadius = 2
+//        cell.layer.shadowOffset = CGSize(width: 2, height: 4)
         
         cell.contentConfiguration = config
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
     }
     
     // MARK: - UITableViewDelegate

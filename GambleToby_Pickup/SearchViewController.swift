@@ -14,6 +14,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addSchoolView: UIView!
     @IBOutlet weak var tokenTF: UITextField!
+    @IBOutlet weak var addBtn: UIButton!
     
     var school: School?
     var schools = [School]()
@@ -73,6 +74,11 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Style addBtn.
+        addBtn.layer.shadowOpacity = 0.2
+        addBtn.layer.shadowRadius = 2
+        addBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
 
         // Place the search bar in the navigation bar.
         navigationItem.searchController = searchController
