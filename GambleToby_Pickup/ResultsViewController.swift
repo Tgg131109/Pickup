@@ -9,24 +9,34 @@ import UIKit
 
 class ResultsViewController: UIViewController {
 
+    @IBOutlet weak var verifiedImg: UIImageView!
     @IBOutlet weak var statusLbl: UILabel!
     @IBOutlet weak var doneBtn: UIButton!
     
+    var token: Token?
     var school: School?
     var registeredStudents = [Student]()
     var schools = [School]()
+
+    var isNew = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationItem.setHidesBackButton(true, animated: true)
+        self.view.backgroundColor = .clear
+        
+        // Style verifiedImg.
+        verifiedImg.layer.shadowOpacity = 0.2
+        verifiedImg.layer.shadowRadius = 2
+        verifiedImg.layer.shadowOffset = CGSize(width: 2, height: 4)
         
         // Style doneBtn.
         doneBtn.layer.shadowOpacity = 0.2
         doneBtn.layer.shadowRadius = 2
         doneBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
         
-        if let schoolName: String = school?.schoolName, let tagNum: String = school?.tagNumber {
+        if let schoolName = school?.schoolName, let tagNum: String = token?.tagNumber {
             // Create string to contain a list of student names and grade levels to be displayed.
             var studentsStr = ""
             
@@ -37,14 +47,21 @@ class ResultsViewController: UIViewController {
             
             saveSchool()
             
-            // Set statusLbl text using schoolName, tagNum, and studentsStr created above.
-            statusLbl.text = "Successfully added \(schoolName) to your profile with the following tag information:\n\nTag \(tagNum)\n\(studentsStr)\n\nYou can now pickup the listed students from the home screen."
+            if isNew {
+                // Set statusLbl text using schoolName, tagNum, and studentsStr created above.
+                statusLbl.text = "Successfully added \(schoolName) to your profile with the following tag information:\n\nTag \(tagNum)\n\(studentsStr)\n\nYou can now pickup the listed students by selecting \(schoolName) from the home screen."
+            } else {
+                // Set statusLbl text using schoolName, tagNum, and studentsStr created above.
+                statusLbl.text = "Successfully added tag #\(tagNum) for \(schoolName) to your profile with the following students:\n\n\(studentsStr)\n\nYou can now pickup the listed students by selecting \(schoolName) from the home screen."
+            }
         }
     }
     
     func saveSchool() {
-        // Add new school to existing schools array.
-        schools.append(school!)
+        if isNew {
+            // Add new school to existing schools array.
+            schools.append(school!)
+        }
 
         // Save schools array to User Defaults.
         UserDefaults.standard.set(schools: schools, forKey: "savedSchools")
@@ -60,7 +77,12 @@ class ResultsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? HomeViewController {
             // Send schools array to HomeViewController and reload HomeViewController tableView.
-            destination.schools.append(self.school!)
+            if isNew {
+                destination.schools.append(self.school!)
+            } else {
+                destination.schools = self.schools
+            }
+
             destination.tableView.reloadData()
         }
     }

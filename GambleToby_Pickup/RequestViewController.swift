@@ -9,6 +9,7 @@ import UIKit
 
 class RequestViewController: UIViewController {
 
+    @IBOutlet weak var sentImg: UIImageView!
     @IBOutlet weak var statusLbl: UILabel!
     @IBOutlet weak var doneBtn: UIButton!
     
@@ -19,6 +20,12 @@ class RequestViewController: UIViewController {
         super.viewDidLoad()
 
         self.navigationItem.setHidesBackButton(true, animated: true)
+        self.view.backgroundColor = .clear
+        
+        // Style sentImg.
+        sentImg.layer.shadowOpacity = 0.2
+        sentImg.layer.shadowRadius = 2
+        sentImg.layer.shadowOffset = CGSize(width: 2, height: 4)
         
         // Style doneBtn.
         doneBtn.layer.shadowOpacity = 0.2
@@ -40,6 +47,10 @@ class RequestViewController: UIViewController {
     }
     
     @IBAction func unwindToHome() {
-         performSegue(withIdentifier: "unwindToHome", sender: self)
+        sentImg.isHidden = true
+        statusLbl.isHidden = true
+        doneBtn.isHidden = true
+        
+        performSegue(withIdentifier: "unwindToHome", sender: self)
     }
 }

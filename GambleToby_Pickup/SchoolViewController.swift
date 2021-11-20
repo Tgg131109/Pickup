@@ -8,19 +8,30 @@
 import UIKit
 import LocalAuthentication
 
-class SchoolViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var instrView: UIView!
+    @IBOutlet weak var collView: UICollectionView!
     @IBOutlet weak var requestBtn: UIButton!
     @IBOutlet weak var deleteBtn: UIButton!
     
     var school: School?
-    var registeredStudents = [Student]()
+    var tokens = [Token]()
+    var registeredStudents = [[Student]()]
     var studentsToRequest = [Student]()
+    var cvInsets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.view.backgroundColor = .clear
+        
+        collView.allowsMultipleSelection = true
+        
+        // Style instrView.
+        instrView.layer.cornerRadius = instrView.bounds.height / 2
+        instrView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        
         // Style requestBtn.
         requestBtn.layer.shadowOpacity = 0.2
         requestBtn.layer.shadowRadius = 2
@@ -34,7 +45,14 @@ class SchoolViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // If school is successfully received, set title and get registered students for the selected school.
         if let schoolName: String = school?.schoolName {
             title = schoolName
-            registeredStudents = school!.registeredStudents
+            
+            if school?.tokens != nil {
+                tokens = school!.tokens
+ 
+                for token in tokens {
+                    registeredStudents.append(token.registeredStudents)
+                }
+            }
         }
     }
     
@@ -53,6 +71,12 @@ class SchoolViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 DispatchQueue.main.async {
                     if success {
                         print("Successful face id")
+                        
+                        self?.instrView.isHidden = true
+                        self?.collView.isHidden = true
+                        self?.requestBtn.isHidden = true
+                        self?.deleteBtn.isHidden = true
+                        
                         // Navigate to RequestViewController.
                         self!.performSegue(withIdentifier: "request_segue", sender: self)
                     } else {
@@ -75,52 +99,61 @@ class SchoolViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    // MARK: - UITableViewDataSource
+    // MARK: - CollectionViewDataSource
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return registeredStudents.count
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return tokens.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell", for: indexPath)
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tokens[section].registeredStudents.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "student_cell1", for: indexPath) as! StudentCollectionViewCell
         
-        // Configure cell.
-        var config = cell.defaultContentConfiguration()
-        config.text = registeredStudents[indexPath.row].fullName
-        config.textProperties.font = .systemFont(ofSize: 22, weight: .medium)
-        config.textProperties.color = .systemBackground
+        // Set cell values.
+        cell.nameLbl.text = tokens[indexPath.section].registeredStudents[indexPath.row].fullName
+        cell.gradeLbl.text = "Grade \(tokens[indexPath.section].registeredStudents[indexPath.row].gradeLvl)"
         
-        config.secondaryText = "Grade: \(registeredStudents[indexPath.row].gradeLvl)"
-        config.secondaryTextProperties.font = .systemFont(ofSize: 16, weight: .medium)
-        config.secondaryTextProperties.color = .systemPurple.withAlphaComponent(0.6)
+        // Format cell.
+        cell.studentImg.layer.borderColor = UIColor.systemBackground.cgColor
+        cell.studentImg.layer.borderWidth = 6
+        cell.studentImg.layer.cornerRadius = cell.studentImg.layer.bounds.height / 2
         
-        // Style cell.
-        cell.backgroundColor = UIColor.systemGray2.withAlphaComponent(0.6)
-        cell.layer.borderColor = UIColor.systemBackground.cgColor
-        cell.layer.borderWidth = 10
-        cell.layer.cornerRadius = 40
-        cell.contentConfiguration = config
+        cell.layer.shadowColor = UIColor.systemGray.cgColor
+        cell.layer.shadowOpacity = 0.5
+        cell.layer.shadowOffset = CGSize(width: 4, height: 4)
+        cell.layer.shadowRadius = 2
+        cell.layer.cornerRadius = 15
+        cell.layer.masksToBounds = false
+        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: 15).cgPath
+        
+        cell.isSelected = false
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "student_header1", for: indexPath) as? SectionHeaderView {
+            sectionHeader.headerLbl.text = "Tag \(tokens[indexPath.section].tagNumber)"
+            
+            // Style headerLbl.
+            sectionHeader.headerLbl.textColor = .systemGreen.withAlphaComponent(0.8)
+            sectionHeader.headerLbl.layer.shadowColor = UIColor.systemGray.cgColor
+            sectionHeader.headerLbl.layer.shadowOpacity = 0.5
+            sectionHeader.headerLbl.layer.shadowOffset = CGSize(width: 4, height: 4)
+            
+            return sectionHeader
+        }
+        return UICollectionReusableView()
     }
     
-    // MARK: - UITableViewDelegate
+    // MARK: - CollectionViewDelegate
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        studentsToRequest.append(tokens[indexPath.section].registeredStudents[indexPath.row])
         
-        studentsToRequest.append(registeredStudents[indexPath.row])
-        
-        // Style cell.
-        cell?.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.6)
-        
-        // Add checkmark to cell.
-        cell?.accessoryType = .checkmark
-    
         // Enable/disable requestBtn and update requestBtn color based on row selection status.
         if studentsToRequest.isEmpty {
             requestBtn.isEnabled = false
@@ -129,25 +162,25 @@ class SchoolViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
-        
-        if let i = studentsToRequest.firstIndex(where: {$0.studentId == registeredStudents[indexPath.row].studentId}) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let i = studentsToRequest.firstIndex(where: {$0.studentId == tokens[indexPath.section].registeredStudents[indexPath.row].studentId}) {
             studentsToRequest.remove(at: i)
         }
         
-        // Style cell.
-        cell?.backgroundColor = UIColor.systemGray4.withAlphaComponent(0.6)
-        
-        // Remove checkmark from cell.
-        cell?.accessoryType = .none
-        
         // Enable/disable requestBtn and update requestBtn color based on row selection status.
         if studentsToRequest.isEmpty {
             requestBtn.isEnabled = false
         } else {
             requestBtn.isEnabled = true
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let layout = collectionViewLayout as? UICollectionViewFlowLayout
+        let space: CGFloat = (layout?.minimumInteritemSpacing ?? 0.0) + (layout?.sectionInset.left ?? 0.0) + (layout?.sectionInset.right ?? 0.0)
+        let size:CGFloat = (collectionView.frame.size.width - space) / 2.0
+        
+        return CGSize(width: size, height: size)
     }
     
     // MARK: - Navigation

@@ -12,16 +12,18 @@ class School: NSObject, NSCoding {
     var schoolName: String
     var schoolCode: String
     var schoolAddress: String
-    var tagNumber: String
-    var registeredStudents: [Student]
+    var tokens: [Token]
+//    var tagNumbers: [String]
+//    var registeredStudents: [Student]
         
     // Initializer.
-    init(schoolName: String, schoolCode: String, schoolAddress: String, tagNumber: String, registeredStudents: [Student]) {
+    init(schoolName: String, schoolCode: String, schoolAddress: String, tokens: [Token]) {
         self.schoolName = schoolName
         self.schoolCode = schoolCode
         self.schoolAddress = schoolAddress
-        self.tagNumber = tagNumber
-        self.registeredStudents = registeredStudents
+        self.tokens = tokens
+//        self.tagNumbers = tagNumbers
+//        self.registeredStudents = registeredStudents
     }
     
     // Method to encode member variables into key/value pairs and store them in the NSCoder object.
@@ -30,19 +32,21 @@ class School: NSObject, NSCoding {
         coder.encode(schoolName, forKey: "schoolName")
         coder.encode(schoolCode, forKey: "schoolCode")
         coder.encode(schoolAddress, forKey: "schoolAddress")
-        coder.encode(tagNumber, forKey: "tagNumber")
-        coder.encode(registeredStudents, forKey: "registeredStudents")
+        coder.encode(tokens, forKey: "tokens")
+//        coder.encode(tagNumbers, forKey: "tagNumbers")
+//        coder.encode(registeredStudents, forKey: "registeredStudents")
     }
     
     // Convenience initializer to decode Team object on watch.
     required convenience init?(coder: NSCoder) {
-        self.init(schoolName: "Test School", schoolCode: "SCH0000", schoolAddress: "123 School St.", tagNumber: "000", registeredStudents: [])
+        self.init(schoolName: "Test School", schoolCode: "SCH0000", schoolAddress: "123 School St.", tokens: [])
         
         // Decode member variables.
         schoolName = coder.decodeObject(forKey: "schoolName") as! String
         schoolCode = coder.decodeObject(forKey: "schoolCode") as! String
         schoolAddress = coder.decodeObject(forKey: "schoolAddress") as! String
-        tagNumber = coder.decodeObject(forKey: "tagNumber") as! String
-        registeredStudents = coder.decodeObject(forKey: "registeredStudents") as! [Student]
+        tokens = coder.decodeObject(forKey: "tokens") as! [Token]
+//        tagNumbers = coder.decodeObject(forKey: "tagNumbers") as! [String]
+//        registeredStudents = coder.decodeObject(forKey: "registeredStudents") as! [Student]
     }
 }

@@ -11,6 +11,9 @@ import CoreLocation
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var capImg: UIImageView!
+    @IBOutlet weak var noSchoolsView: UIView!
+    @IBOutlet weak var instrView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addBtn: UIButton!
     
@@ -22,21 +25,35 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        appearance.backgroundColor = .systemBlue.withAlphaComponent(0.6)
-
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.systemBackground]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.systemBackground]
+        appearance.backgroundColor = .clear
+        
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "flowBkgd")
+        backgroundImage.backgroundColor = .clear
+        backgroundImage.isOpaque = false
+        backgroundImage.contentMode =  UIView.ContentMode.scaleToFill
         
-        navigationController?.navigationBar.tintColor = .systemYellow
+        navigationController?.view.backgroundColor = .systemBackground
+        navigationController?.view.insertSubview(backgroundImage, at: 0)
+        
+        self.view.backgroundColor = .clear
+        
+        // Style instrView.
+        instrView.layer.cornerRadius = instrView.bounds.height / 2
+        instrView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         
         // Style addBtn.
-        addBtn.layer.shadowOpacity = 0.2
+        addBtn.layer.shadowColor = UIColor.systemGray.cgColor
+        addBtn.layer.shadowOpacity = 0.5
         addBtn.layer.shadowRadius = 2
         addBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
-        
+
         // Uncomment the following lines to clear UserDefaults data.
 //        UserDefaults.standard.removeObject(forKey: "savedSchools")
 //        UserDefaults.standard.synchronize()
@@ -44,13 +61,56 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Set schools array equal to user's saved schools if they exist.
         if let savedSchools = UserDefaults.standard.school(forKey: "savedSchools") {
             schools = savedSchools
+        } else {
+            instrView.isHidden = true
+            
+            // Style capImg.
+            capImg.layer.shadowOpacity = 0.2
+            capImg.layer.shadowRadius = 2
+            capImg.layer.shadowOffset = CGSize(width: 2, height: 4)
+            
+            // Style noSchoolsView.
+            noSchoolsView.layer.shadowColor = UIColor.systemGray.cgColor
+            noSchoolsView.layer.shadowOpacity = 0.5
+            noSchoolsView.layer.shadowRadius = 2
+            noSchoolsView.layer.shadowOffset = CGSize(width: 2, height: 4)
+            noSchoolsView.layer.cornerRadius = 15
+            noSchoolsView.layer.borderWidth = 6
+            noSchoolsView.layer.borderColor = UIColor.systemYellow.cgColor
+            noSchoolsView.isHidden = false
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if !schools.isEmpty {
+            hideViews(show: true)
         }
     }
     
     @IBAction func unwindToHome(segue: UIStoryboardSegue) {}
     
     @IBAction func findSchoolsTapped() {
+        hideViews(show: false)
         performSegue(withIdentifier: "search_segue", sender: self)
+    }
+    
+    func hideViews(show : Bool) {
+        // Show views.
+        if show {
+            instrView.isHidden = false
+            tableView.isHidden = false
+            addBtn.isHidden = false
+            noSchoolsView.isHidden = true
+        // Hide views.
+        } else {
+            instrView.isHidden = true
+            tableView.isHidden = true
+            addBtn.isHidden = true
+            
+            if !noSchoolsView.isHidden {
+                noSchoolsView.isHidden = true
+            }
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -60,35 +120,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "schoolCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "schoolCell", for: indexPath) as! SchoolTableViewCell
         
         // Configure cell.
-        var config = cell.defaultContentConfiguration()
-        config.text = schools[indexPath.row].schoolName
-        config.textProperties.alignment = .center
-        config.textProperties.font = .systemFont(ofSize: 22, weight: .medium)
-        config.textProperties.color = .systemBackground
-        
+        cell.titleLbl.text = schools[indexPath.row].schoolName
+ 
         // Style cell.
-        cell.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.6)
-        cell.layer.borderColor = UIColor.systemBackground.cgColor
+        cell.layer.borderColor = UIColor.clear.cgColor
         cell.layer.borderWidth = 10
         cell.layer.cornerRadius = 40
-        cell.layer.shadowColor = UIColor.systemRed.cgColor
-
-//        cell.layer.shadowOpacity = 0.2
-////        addBtn.layer.shadowPath = UIBezierPath(rect: addBtn.bounds).cgPath
-////        addBtn.layer.shadowPath = UIBezierPath(roundedRect: addBtn.bounds, cornerRadius: addBtn.layer.cornerRadius).cgPath
-//        cell.layer.shadowRadius = 2
-//        cell.layer.shadowOffset = CGSize(width: 2, height: 4)
+        cell.layer.masksToBounds = false
         
-        cell.contentConfiguration = config
+        cell.bkgdView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.8)
         
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
     }
     
     // MARK: - UITableViewDelegate
@@ -98,6 +143,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.deselectRow(at: indexPath, animated: true)
         // Get selected school from schools array.
         school = schools[indexPath.row]
+        
+        hideViews(show: false)
+        
         // Navigate to SchoolViewController.
         performSegue(withIdentifier: "student_segue", sender: self)
     }

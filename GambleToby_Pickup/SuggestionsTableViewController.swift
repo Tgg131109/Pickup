@@ -19,6 +19,8 @@ class SuggestionsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(SuggestedCompletionTableViewCell.self, forCellReuseIdentifier: SuggestedCompletionTableViewCell.reuseID)
+        tableView.backgroundColor = .systemBackground.withAlphaComponent(0.5)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -60,6 +62,7 @@ class SuggestionsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var header = NSLocalizedString("SEARCH_RESULTS", comment: "Standard result text")
+        
         if let city = currentPlacemark?.locality {
             let templateString = NSLocalizedString("SEARCH_RESULTS_LOCATION", comment: "Search result text with city")
             header = String(format: templateString, city)
@@ -76,6 +79,7 @@ class SuggestionsTableViewController: UITableViewController {
             // Each suggestion is a MKLocalSearchCompletion with a title, subtitle, and ranges describing what part of the title
             // and subtitle matched the current query string. The ranges can be used to apply helpful highlighting of the text in
             // the completion suggestion that matches the current query fragment.
+            cell.backgroundColor = .clear
             cell.textLabel?.attributedText = createHighlightedString(text: suggestion.title, rangeValues: suggestion.titleHighlightRanges)
             cell.detailTextLabel?.attributedText = createHighlightedString(text: suggestion.subtitle, rangeValues: suggestion.subtitleHighlightRanges)
         }

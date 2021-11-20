@@ -13,18 +13,21 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addSchoolView: UIView!
-    @IBOutlet weak var tokenTF: UITextField!
-    @IBOutlet weak var addBtn: UIButton!
     
     var school: School?
+    var token: Token?
     var schools = [School]()
+    var tokens = [Token]()
+    var registeredStudents = [Student]()
     
     var tagNumber = ""
-    var registeredStudents = [Student]()
     var foundSchoolName = ""
     var foundSchoolCode = ""
     var foundSchoolAddress = ""
     var tokenVerified = false
+    var isNew = false
+    
+    var selectedIndexPath: IndexPath?
     
     private var places: [MKMapItem]? {
         didSet {
@@ -75,10 +78,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Style addBtn.
-        addBtn.layer.shadowOpacity = 0.2
-        addBtn.layer.shadowRadius = 2
-        addBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
+        self.view.backgroundColor = .clear
 
         // Place the search bar in the navigation bar.
         navigationItem.searchController = searchController
@@ -88,7 +88,12 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         // Set searchController delegate.
         searchController.searchBar.delegate = self
- 
+        
+        // Style searchController text field.
+        if let tf = searchController.searchBar.value(forKey: "searchField") as? UITextField {
+            tf.backgroundColor = .systemBackground
+        }
+        
         // Define presentation context from a view in controller hierarchy since the search is presenting a view controller.
         definesPresentationContext = true
     }
@@ -96,13 +101,23 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         requestLocation()
-        addSchoolView.isHidden = true
     }
     
-    @IBAction func checkToken() {
+    func checkToken(tokenTF: UITextField) {
         if !tokenTF.hasText {
-            print("Empty field")
-            // An alert will be presented here.
+            // Show alert if tokenTF is empty.
+            let ac = UIAlertController(title: "Token missing", message: "The token field cannot be empty.", preferredStyle: .alert)
+            
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            self.present(ac, animated: true)
+        } else if schools.contains(where: {$0.tokens.contains(where: {$0.token == tokenTF.text!})}) {
+            // Show alert if tokenTF is empty.
+            let ac = UIAlertController(title: "Duplicate token", message: "The provided token is already associated with your profile.", preferredStyle: .alert)
+            
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            self.present(ac, animated: true)
         } else {
             // Get path to Schools.json file.
             if let path = Bundle.main.path(forResource: "Schools", ofType: ".json") {
@@ -178,8 +193,27 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         }
                         
                         if tokenVerified {
-                            // Create new School object to be sent to ResultsViewController where it will be saved to UserDefaults.
-                            school = School(schoolName: foundSchoolName, schoolCode: foundSchoolCode, schoolAddress: foundSchoolAddress, tagNumber: tagNumber, registeredStudents: registeredStudents)
+                            // Create new Token object to be saved to School object.
+                            token = Token(token: tokenTF.text!, tagNumber: tagNumber, registeredStudents: registeredStudents)
+                            
+                            // Action if school is already associated with user's profile
+                            if let existingSchool = schools.first(where: {$0.schoolCode == foundSchoolCode}) {
+                                print("Adding token to existing school.")
+
+                                existingSchool.tokens.append(token!)
+                                school = existingSchool
+                            } else {
+                                isNew = true
+                                // Create new School object to be sent to ResultsViewController where it will be saved to UserDefaults.
+                                school = School(schoolName: foundSchoolName, schoolCode: foundSchoolCode, schoolAddress: foundSchoolAddress, tokens: [token!])
+                            }
+                        } else {
+                            // Show alert if entered token is not found.
+                            let ac = UIAlertController(title: "Invalid Token", message: "The provided token is invalid. Please check that your token and try again. If the problem persist, please contact your student's school for assistance.", preferredStyle: .alert)
+                            
+                            ac.addAction(UIAlertAction(title: "OK", style: .default))
+                            
+                            self.present(ac, animated: true)
                         }
                     }
                 }
@@ -244,17 +278,33 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath) as! SearchTableViewCell
+        
+        cell.backgroundColor = .clear
         
         if let mapItem = places?[indexPath.row] {
             foundSchoolName = mapItem.name!
             foundSchoolAddress = mapItem.placemark.formattedAddress!
+
+            cell.nameLbl.text = foundSchoolName
+            cell.addressLbl.text = foundSchoolAddress
             
-            cell.textLabel?.text = foundSchoolName
-            cell.detailTextLabel?.text = foundSchoolAddress
+            cell.checkToken = { [unowned self] in
+                checkToken(tokenTF: cell.tokenTF)
+            }
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // Expanded cell.
+        if selectedIndexPath == indexPath {
+            return 250.0
+        }
+        
+        // Collapsed cell.
+        return 60.0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -272,14 +322,19 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Action if SuggestionsTableViewController tableView row is selected.
         if tableView == suggestionController.tableView, let suggestion = suggestionController.completerResults?[indexPath.row] {
-            tableView.deselectRow(at: indexPath, animated: true)
-            
             searchController.isActive = false
             searchController.searchBar.text = suggestion.title
             search(for: suggestion)
+        // Action if SearchViewController tableView is selected.
         } else {
-            addSchoolView.isHidden = false
+            selectedIndexPath = indexPath
+            
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            
+            selectedIndexPath = nil
         }
     }
     
@@ -298,6 +353,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Get the new view controller using segue.destination.
         if let destination = segue.destination as? ResultsViewController {
             // Send selected current color set and app appearance to SettingsViewController on tap.
+            destination.isNew = self.isNew
+            destination.token = self.token
             destination.school = self.school
             destination.registeredStudents = self.registeredStudents
             destination.schools = self.schools
@@ -381,12 +438,18 @@ extension SearchViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
     
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        self.tableView.isHidden = true
+        return true
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(true, animated: true)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
+        self.tableView.isHidden = false
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

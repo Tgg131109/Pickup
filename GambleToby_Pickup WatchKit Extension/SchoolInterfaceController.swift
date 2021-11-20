@@ -33,7 +33,14 @@ class SchoolInterfaceController: WKInterfaceController {
             // Update view with School object data from data created above.
             schoolName = data.schoolName
             setTitle(schoolName)
-            students = data.registeredStudents
+            students = [Student]()
+//            students = data.registeredStudents
+            
+            for token in data.tokens {
+                print(token.tagNumber)
+                students.append(contentsOf: token.registeredStudents)
+//                students.append(token.registeredStudents)
+            }
             
             // Set number of rows equal to number of students in students array.
             self.tableView.setNumberOfRows(self.students.count, withRowType: "row_controller_1")
