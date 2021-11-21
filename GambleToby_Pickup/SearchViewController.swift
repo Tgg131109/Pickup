@@ -12,7 +12,6 @@ import MapKit
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var addSchoolView: UIView!
     
     var school: School?
     var token: Token?
@@ -96,6 +95,14 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         // Define presentation context from a view in controller hierarchy since the search is presenting a view controller.
         definesPresentationContext = true
+        
+        if !schools.isEmpty {
+            for school in schools {
+                print(school.schoolName)
+            }
+        } else {
+            print("No schools")
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -177,7 +184,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                             print("\(fName) \(lName) | \(grade)")
                                             
                                             // Create new Student object and add to registeredStudents array.
-                                            registeredStudents.append(Student(firstName: fName, lastName: lName, gradeLvl: grade, studentId: sId))
+                                            registeredStudents.append(Student(firstName: fName, lastName: lName, gradeLvl: grade, studentId: sId, isRequested: false))
                                         }
                                         
                                         break
@@ -198,8 +205,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             
                             // Action if school is already associated with user's profile
                             if let existingSchool = schools.first(where: {$0.schoolCode == foundSchoolCode}) {
-                                print("Adding token to existing school.")
-
                                 existingSchool.tokens.append(token!)
                                 school = existingSchool
                             } else {
@@ -342,6 +347,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if tokenVerified {
+            tableView.isHidden = true
             return true
         }
         

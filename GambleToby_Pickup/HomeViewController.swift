@@ -62,28 +62,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let savedSchools = UserDefaults.standard.school(forKey: "savedSchools") {
             schools = savedSchools
         } else {
-            instrView.isHidden = true
-            
-            // Style capImg.
-            capImg.layer.shadowOpacity = 0.2
-            capImg.layer.shadowRadius = 2
-            capImg.layer.shadowOffset = CGSize(width: 2, height: 4)
-            
-            // Style noSchoolsView.
-            noSchoolsView.layer.shadowColor = UIColor.systemGray.cgColor
-            noSchoolsView.layer.shadowOpacity = 0.5
-            noSchoolsView.layer.shadowRadius = 2
-            noSchoolsView.layer.shadowOffset = CGSize(width: 2, height: 4)
-            noSchoolsView.layer.cornerRadius = 15
-            noSchoolsView.layer.borderWidth = 6
-            noSchoolsView.layer.borderColor = UIColor.systemYellow.cgColor
-            noSchoolsView.isHidden = false
+            showNoSchoolsView()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         if !schools.isEmpty {
             hideViews(show: true)
+        } else {
+            showNoSchoolsView()
         }
     }
     
@@ -110,6 +97,30 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             if !noSchoolsView.isHidden {
                 noSchoolsView.isHidden = true
             }
+        }
+    }
+    
+    func showNoSchoolsView() {
+        instrView.isHidden = true
+        
+        // Style capImg.
+        capImg.layer.shadowOpacity = 0.2
+        capImg.layer.shadowRadius = 2
+        capImg.layer.shadowOffset = CGSize(width: 2, height: 4)
+        
+        // Style noSchoolsView.
+        noSchoolsView.layer.shadowColor = UIColor.systemGray.cgColor
+        noSchoolsView.layer.shadowOpacity = 0.5
+        noSchoolsView.layer.shadowRadius = 2
+        noSchoolsView.layer.shadowOffset = CGSize(width: 2, height: 4)
+        noSchoolsView.layer.cornerRadius = 15
+        noSchoolsView.layer.borderWidth = 6
+        noSchoolsView.layer.borderColor = UIColor.systemYellow.cgColor
+        // Show noSchoolsView.
+        noSchoolsView.isHidden = false
+        
+        if addBtn.isHidden {
+            addBtn.isHidden = false
         }
     }
     
@@ -158,6 +169,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let destination = segue.destination as? SchoolViewController {
             // Send selected school to SchoolViewController.
             destination.school = self.school
+            destination.schools = self.schools
         }
         
         // Action if navigating to SearchViewController.

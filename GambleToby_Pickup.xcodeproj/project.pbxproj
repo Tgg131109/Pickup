@@ -32,7 +32,6 @@
 		3A79772627381A030070E684 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A79772527381A030070E684 /* Student.swift */; };
 		3A797728273888230070E684 /* SchoolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A797727273888230070E684 /* SchoolViewController.swift */; };
 		3A79772A2738B5110070E684 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7977292738B5110070E684 /* RequestViewController.swift */; };
-		3A79772B2738BF850070E684 /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A797723273819F90070E684 /* School.swift */; };
 		3A79772C2738BF900070E684 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A79772527381A030070E684 /* Student.swift */; };
 		3A8471D52740229300B60371 /* SchoolInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8471D42740229300B60371 /* SchoolInterfaceController.swift */; };
 		3A8471D92740566B00B60371 /* RequestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8471D82740566B00B60371 /* RequestInterfaceController.swift */; };
@@ -40,7 +39,8 @@
 		3ABCE1032747D0FC00B12EB6 /* StudentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABCE1022747D0FC00B12EB6 /* StudentCollectionViewCell.swift */; };
 		3ABCE10527483B7600B12EB6 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABCE10427483B7600B12EB6 /* Token.swift */; };
 		3ABCE106274843BA00B12EB6 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABCE10427483B7600B12EB6 /* Token.swift */; };
-		3ABCE10827485C1200B12EB6 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABCE10727485C1200B12EB6 /* SectionHeaderView.swift */; };
+		3ABCE1092749A28B00B12EB6 /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A797723273819F90070E684 /* School.swift */; };
+		3ABCE10A2749A35800B12EB6 /* UserDefaults_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */; };
 		3AC15809273F043400ECD9BA /* UserDefaults_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -121,7 +121,6 @@
 		3ABCE1002746FFBA00B12EB6 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		3ABCE1022747D0FC00B12EB6 /* StudentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentCollectionViewCell.swift; sourceTree = "<group>"; };
 		3ABCE10427483B7600B12EB6 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
-		3ABCE10727485C1200B12EB6 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults_Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,7 +171,6 @@
 				3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */,
 				3A7976D92734BB890070E684 /* HomeViewController.swift */,
 				3A797727273888230070E684 /* SchoolViewController.swift */,
-				3ABCE10727485C1200B12EB6 /* SectionHeaderView.swift */,
 				3A7977292738B5110070E684 /* RequestViewController.swift */,
 				3A79771C2737FB020070E684 /* SearchViewController.swift */,
 				3A797714273730420070E684 /* SuggestionsTableViewController.swift */,
@@ -370,7 +368,6 @@
 				3A79772627381A030070E684 /* Student.swift in Sources */,
 				3A7976D62734BB890070E684 /* AppDelegate.swift in Sources */,
 				3A797719273740210070E684 /* MKPlacemark_Extension.swift in Sources */,
-				3ABCE10827485C1200B12EB6 /* SectionHeaderView.swift in Sources */,
 				3A79772A2738B5110070E684 /* RequestViewController.swift in Sources */,
 				3A7976D82734BB890070E684 /* SceneDelegate.swift in Sources */,
 				3A797724273819F90070E684 /* School.swift in Sources */,
@@ -384,12 +381,13 @@
 			files = (
 				3ABCE106274843BA00B12EB6 /* Token.swift in Sources */,
 				3A8471D52740229300B60371 /* SchoolInterfaceController.swift in Sources */,
+				3ABCE10A2749A35800B12EB6 /* UserDefaults_Extension.swift in Sources */,
 				3A7976FE2734BB8C0070E684 /* NotificationController.swift in Sources */,
 				3A8471D92740566B00B60371 /* RequestInterfaceController.swift in Sources */,
+				3ABCE1092749A28B00B12EB6 /* School.swift in Sources */,
 				3A79772C2738BF900070E684 /* Student.swift in Sources */,
 				3A7977002734BB8C0070E684 /* ComplicationController.swift in Sources */,
 				3A7976FC2734BB8C0070E684 /* ExtensionDelegate.swift in Sources */,
-				3A79772B2738BF850070E684 /* School.swift in Sources */,
 				3A7976FA2734BB8C0070E684 /* HomeInterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

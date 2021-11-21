@@ -30,7 +30,22 @@ extension UserDefaults {
                     return schools
                 }
             } catch {
-                print(error.localizedDescription)
+                // When the watch app is run, NSKeyedArchiver.setClass() is used to set encode classes.
+                // NSKeyedUnarchiver.setClass is not used when the phone app is trying to retrieve data.
+                // NSKeyedUnarchiver.setClass is called here to prevent errors and ensure data is properly retrieved.
+                print("Can't find class. Retrying...")
+                
+                NSKeyedUnarchiver.setClass(School.self, forClassName: "School")
+                NSKeyedUnarchiver.setClass(Student.self, forClassName: "Student")
+                NSKeyedUnarchiver.setClass(Token.self, forClassName: "Token")
+                do {
+                    if let schools = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(binaryData) as? [School] {
+                        // Return array of School objects
+                        return schools
+                    }
+                } catch {
+                    print(String(describing: error))
+                }
             }
         }
         

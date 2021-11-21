@@ -72,3 +72,17 @@ class StudentCollectionViewCell: UICollectionViewCell {
         )
     }
 }
+
+class SectionHeaderView: UICollectionReusableView {
+    
+    @IBOutlet weak var headerLbl: UILabel!
+    @IBOutlet weak var deleteBtn: UIButton!
+    
+    var deleteTag : (() -> ())?
+    
+    @IBAction func deleteBtnTapped(_ sender: UIButton) {
+        // if the closure is defined (not nil)
+        // then execute the code inside the checkToken closure
+        deleteTag?()
+    }
+}

@@ -55,6 +55,14 @@ class ResultsViewController: UIViewController {
                 statusLbl.text = "Successfully added tag #\(tagNum) for \(schoolName) to your profile with the following students:\n\n\(studentsStr)\n\nYou can now pickup the listed students by selecting \(schoolName) from the home screen."
             }
         }
+        
+        if !schools.isEmpty {
+            for school in schools {
+                print(school.schoolName)
+            }
+        } else {
+            print("No schools")
+        }
     }
     
     func saveSchool() {

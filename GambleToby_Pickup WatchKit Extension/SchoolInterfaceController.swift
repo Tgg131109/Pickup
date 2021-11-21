@@ -15,6 +15,8 @@ class SchoolInterfaceController: WKInterfaceController {
     
     var schoolName = ""
     var students = [Student]()
+    var rowTypes = [String]()
+    var studentIndex = [Int]()
     var studentsToRequest = [Student]()
     var requestSent = false
     
@@ -34,22 +36,43 @@ class SchoolInterfaceController: WKInterfaceController {
             schoolName = data.schoolName
             setTitle(schoolName)
             students = [Student]()
-//            students = data.registeredStudents
             
             for token in data.tokens {
                 print(token.tagNumber)
                 students.append(contentsOf: token.registeredStudents)
-//                students.append(token.registeredStudents)
+                
+                rowTypes.append("header")
+                
+                for _ in 0...token.registeredStudents.count - 1 {
+                    rowTypes.append("row")
+                }
             }
             
             // Set number of rows equal to number of students in students array.
-            self.tableView.setNumberOfRows(self.students.count, withRowType: "row_controller_1")
+            self.tableView.setRowTypes(rowTypes)
 
+            var headerIndex = -1
+            var rowIndex = -1
+            
             // Set table row title using data from students array.
-            for (index, student) in self.students.enumerated() {
-                let row = self.tableView.rowController(at: index) as! RowController
-
-                row.titleLbl.setText(student.fullName)
+            for index in 0...rowTypes.count - 1 {
+                if rowTypes[index] == "header" {
+                    let row = self.tableView.rowController(at: index) as! HeaderController
+                    
+                    headerIndex += 1
+                    rowIndex = -1
+                    studentIndex.append(-1)
+                    
+                    row.titleLbl.setText(data.tokens[headerIndex].tagNumber)
+                } else {
+                    let row = self.tableView.rowController(at: index) as! RowController
+                    
+                    rowIndex += 1
+                    studentIndex.append(students.firstIndex(where: {$0.studentId == data.tokens[headerIndex].registeredStudents[rowIndex].studentId})!)
+                    
+                    row.titleLbl.setText(data.tokens[headerIndex].registeredStudents[rowIndex].fullName)
+                    
+                }
             }
         }
     }
@@ -76,10 +99,10 @@ class SchoolInterfaceController: WKInterfaceController {
         
         // Show/hide checkmark image and add/remove student based on row selection status.
         if row.isSelected {
-            studentsToRequest.append(students[rowIndex])
+            studentsToRequest.append(students[studentIndex[rowIndex]])
             row.selectedImg.setHidden(false)
         } else {
-            if let i = studentsToRequest.firstIndex(where: {$0.studentId == students[rowIndex].studentId}) {
+            if let i = studentsToRequest.firstIndex(where: {$0.studentId == students[studentIndex[rowIndex]].studentId}) {
                 studentsToRequest.remove(at: i)
             }
 

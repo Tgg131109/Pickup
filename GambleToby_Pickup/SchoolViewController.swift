@@ -19,6 +19,8 @@ class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollec
     var tokens = [Token]()
     var registeredStudents = [[Student]()]
     var studentsToRequest = [Student]()
+    var schools = [School]()
+    
     var cvInsets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
     
     override func viewDidLoad() {
@@ -99,6 +101,47 @@ class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollec
         }
     }
     
+    @IBAction func deleteSchool(_ sender: UIButton) {
+        // Show alert.
+        if let schoolName = school?.schoolName {
+            let ac = UIAlertController(title: "Delete School?", message: "Are you sure you want to delete \(schoolName) and associated tags? This action cannot be undone.", preferredStyle: .alert)
+            
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            ac.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+                // Delete school from schools array.
+                self.schools.removeAll(where: {$0.schoolCode == self.school?.schoolCode})
+                
+                // Save schools array to User Defaults.
+                UserDefaults.standard.set(schools: self.schools, forKey: "savedSchools")
+                
+                // Navigate back to HomeViewController.
+                self.performSegue(withIdentifier: "unwindToHome", sender: self)
+            }))
+            
+            present(ac, animated: true)
+        }
+    }
+    
+    func deleteTag(token: Token, section: Int) {
+        // Show alert.
+        if let i = self.schools.firstIndex(where: {$0.tokens.contains(where: {$0.token == token.token})}) {
+            let ac = UIAlertController(title: "Delete Tag?", message: "Are you sure you want to delete Tag #\(token.tagNumber) and associated students? This action cannot be undone.", preferredStyle: .alert)
+            
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            ac.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+                // Delete tag from school in schools array and update collView.
+                self.schools[i].tokens.removeAll(where: {$0.token == token.token})
+                self.tokens.remove(at: section)
+                self.collView.deleteSections(IndexSet.init(integer: section))
+
+                // Save schools array to User Defaults.
+                UserDefaults.standard.set(schools: self.schools, forKey: "savedSchools")
+            }))
+            
+            present(ac, animated: true)
+        }
+    }
+    
     // MARK: - CollectionViewDataSource
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -136,13 +179,22 @@ class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "student_header1", for: indexPath) as? SectionHeaderView {
-            sectionHeader.headerLbl.text = "Tag \(tokens[indexPath.section].tagNumber)"
+            // Set headerLbl text.
+            let headerText = NSMutableAttributedString(string: "Tag | \(tokens[indexPath.section].tagNumber)")
+            headerText.addAttribute(.foregroundColor, value: UIColor.systemGray, range: NSRange(location: 0, length: 5))
+        
+            sectionHeader.headerLbl.attributedText = headerText
             
             // Style headerLbl.
-            sectionHeader.headerLbl.textColor = .systemGreen.withAlphaComponent(0.8)
-            sectionHeader.headerLbl.layer.shadowColor = UIColor.systemGray.cgColor
-            sectionHeader.headerLbl.layer.shadowOpacity = 0.5
-            sectionHeader.headerLbl.layer.shadowOffset = CGSize(width: 4, height: 4)
+            sectionHeader.backgroundColor = .systemBackground.withAlphaComponent(0.5)
+            
+            sectionHeader.deleteTag = { [unowned self] in
+                deleteTag(token: tokens[indexPath.section], section: indexPath.section)
+            }
+            
+            if tokens.count == 1 {
+                sectionHeader.deleteBtn.isHidden = true
+            }
             
             return sectionHeader
         }
@@ -187,11 +239,18 @@ class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Action if navigating to SchoolViewController.
+        // Action if navigating to RequestViewController.
         if let destination = segue.destination as? RequestViewController {
-            // Send selected school to SchoolViewController.
+            // Send selected school and students to RequestViewController.
             destination.school = self.school
             destination.studentsToRequest = self.studentsToRequest
+        }
+        
+        // Action if navigating to HomeViewController.
+        if let destination = segue.destination as? HomeViewController {
+            // Send schools array to HomeViewController and reload HomeViewController tableView.
+            destination.schools = self.schools
+            destination.tableView.reloadData()
         }
     }
 }

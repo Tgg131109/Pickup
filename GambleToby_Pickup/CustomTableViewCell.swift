@@ -64,11 +64,11 @@ class SearchTableViewCell: UITableViewCell {
         }
     }
 
-    @IBAction func addBtnTapped(_ sender: UIButton){
+    @IBAction func addBtnTapped(_ sender: UIButton) {
         // if the closure is defined (not nil)
         // then execute the code inside the checkToken closure
         checkToken?()
-      }
+    }
     
     func expand() {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveLinear, animations: {

@@ -18,7 +18,7 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
     var schools = [School]()
     
     // Initialize session object if it is supported.
-    fileprivate let session: WCSession? = WCSession.isSupported() ? WCSession.default:nil
+    fileprivate let session: WCSession? = WCSession.isSupported() ? WCSession.default: nil
 
     override init(){
         super.init()
@@ -47,12 +47,12 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func getData() {
+        print("Get Data")
         // Initialize message data to send to iOS app.
         let myValues:[String: Any] = ["getSchools":true]
-        
+
         // Check that the session is reachable and that the session var has been properly initialized.
         if let session = session, session.isReachable {
-            
             // Update titleLbl text.
             instructionLbl.setText("Getting schools...")
             
@@ -65,8 +65,9 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
                     // Extract data object.
                     if let data = replyData["schools"] as? Data {
                         // Set unarchiver classes to decode the data back to a Team object.
-                        NSKeyedUnarchiver.setClass(School.self, forClassName: "Schools")
-                        NSKeyedUnarchiver.setClass(Student.self, forClassName: "Students")
+                        NSKeyedUnarchiver.setClass(School.self, forClassName: "School")
+                        NSKeyedUnarchiver.setClass(Student.self, forClassName: "Student")
+                        NSKeyedUnarchiver.setClass(Token.self, forClassName: "Token")
 
                         do {
                             // Get array of School objects from replyData using NSKeyedUnarchiver and data created above.
@@ -110,7 +111,14 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
     }
 }
 
+class HeaderController: NSObject {
+    @IBOutlet weak var rowBkgd: WKInterfaceGroup!
+    @IBOutlet weak var titleLbl: WKInterfaceLabel!
+    @IBOutlet weak var selectedImg: WKInterfaceImage!
+}
+
 class RowController: NSObject {
+    @IBOutlet weak var rowBkgd: WKInterfaceGroup!
     @IBOutlet weak var titleLbl: WKInterfaceLabel!
     @IBOutlet weak var selectedImg: WKInterfaceImage!
     
