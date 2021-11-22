@@ -17,11 +17,9 @@ class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     var school: School?
     var tokens = [Token]()
-    var registeredStudents = [[Student]()]
+    var registeredStudents = [[Student]]()
     var studentsToRequest = [Student]()
     var schools = [School]()
-    
-    var cvInsets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,19 +29,16 @@ class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollec
         collView.allowsMultipleSelection = true
         
         // Style instrView.
-        instrView.layer.cornerRadius = instrView.bounds.height / 2
-        instrView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        instrView.backgroundColor = .systemBackground.withAlphaComponent(0.8)
+        instrView.layer.cornerRadius = 40
+        instrView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
         // Style requestBtn.
-        requestBtn.layer.shadowOpacity = 0.2
-        requestBtn.layer.shadowRadius = 2
-        requestBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
-        
+        requestBtn.addCornerRadius(shadow: true)
+
         // Style deleteBtn.
-        deleteBtn.layer.shadowOpacity = 0.2
-        deleteBtn.layer.shadowRadius = 2
-        deleteBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
-        
+        deleteBtn.addCornerRadius(shadow: true)
+
         // If school is successfully received, set title and get registered students for the selected school.
         if let schoolName: String = school?.schoolName {
             title = schoolName
@@ -179,6 +174,9 @@ class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "student_header1", for: indexPath) as? SectionHeaderView {
+            
+            sectionHeader.headerLbl.textColor = .systemMint
+            
             // Set headerLbl text.
             let headerText = NSMutableAttributedString(string: "Tag | \(tokens[indexPath.section].tagNumber)")
             headerText.addAttribute(.foregroundColor, value: UIColor.systemGray, range: NSRange(location: 0, length: 5))
@@ -243,6 +241,8 @@ class SchoolViewController: UIViewController, UICollectionViewDelegate, UICollec
         if let destination = segue.destination as? RequestViewController {
             // Send selected school and students to RequestViewController.
             destination.school = self.school
+            destination.schools = self.schools
+            destination.tokens = self.tokens
             destination.studentsToRequest = self.studentsToRequest
         }
         

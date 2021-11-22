@@ -78,7 +78,7 @@
                         <label alignment="left" text="Select students" id="xRO-jz-RIY"/>
                         <table alignment="left" id="l8I-QX-VD5">
                             <items>
-                                <tableRow identifier="header" id="i4S-LX-C06" customClass="HeaderController" customModule="GambleToby_Pickup_WatchKit_Extension">
+                                <tableRow identifier="header" selectable="NO" id="i4S-LX-C06" customClass="HeaderController" customModule="GambleToby_Pickup_WatchKit_Extension">
                                     <group key="rootItem" width="1" height="0.0" alignment="left" spacing="17" id="9h1-Na-Uhy">
                                         <items>
                                             <label alignment="left" text="Tag | 000" id="qEG-z7-rCI">

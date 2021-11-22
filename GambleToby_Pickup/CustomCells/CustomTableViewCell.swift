@@ -11,23 +11,54 @@ class SchoolTableViewCell: UITableViewCell {
 
     @IBOutlet weak var bkgdView: UIView!
     @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var reqstLbl: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
 
-        bkgdView.layer.cornerRadius = bkgdView.layer.bounds.height/2
-        bkgdView.layer.shadowColor = UIColor.systemGray.cgColor
-        bkgdView.layer.shadowOpacity = 0.5
-        bkgdView.layer.shadowRadius = 2
-        bkgdView.layer.shadowOffset = CGSize(width: 4, height: 4)
-        
+        bkgdView.addCornerRadius(shadow: true)
         titleLbl.textColor = .systemBackground
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+}
 
+class RequestTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var bkgdView: UIView!
+    @IBOutlet weak var tagNumLbl: UILabel!
+    @IBOutlet weak var studentsLbl: UILabel!
+    @IBOutlet weak var statusLbl: UILabel!
+    @IBOutlet weak var requestedLbl: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        bkgdView.addCornerRadius(shadow: true)
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        if selected {
+            UIView.animate(
+                withDuration: 0.5,
+                animations: {
+                    self.contentView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    self.bkgdView.backgroundColor = .systemYellow.withAlphaComponent(0.8)
+                }
+            )
+        } else {
+            UIView.animate(
+                withDuration: 0.5,
+                animations: {
+                    self.contentView.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+                    self.bkgdView.backgroundColor = .systemMint.withAlphaComponent(0.8)
+                }
+            )
+        }
     }
 }
 
@@ -35,6 +66,7 @@ class SearchTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var addressLbl: UILabel!
+    @IBOutlet weak var instrLbl: UILabel!
     @IBOutlet weak var tokenTF: UITextField!
     @IBOutlet weak var addBtn: UIButton!
     @IBOutlet weak var detailsHeightConstraint: NSLayoutConstraint!
@@ -46,10 +78,9 @@ class SearchTableViewCell: UITableViewCell {
         super.awakeFromNib()
 
         // Style addBtn.
-        addBtn.layer.shadowOpacity = 0.2
-        addBtn.layer.shadowRadius = 2
-        addBtn.layer.shadowOffset = CGSize(width: 2, height: 4)
-        
+        addBtn.addCornerRadius(shadow: true)
+
+        // Set values for resizing cell.
         defaultHeight = detailsHeightConstraint.constant
         detailsHeightConstraint.constant = 60
     }

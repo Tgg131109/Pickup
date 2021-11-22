@@ -41,6 +41,7 @@
 		3ABCE106274843BA00B12EB6 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABCE10427483B7600B12EB6 /* Token.swift */; };
 		3ABCE1092749A28B00B12EB6 /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A797723273819F90070E684 /* School.swift */; };
 		3ABCE10A2749A35800B12EB6 /* UserDefaults_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */; };
+		3ABCE10F274A849700B12EB6 /* ViewStyle_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABCE10E274A849700B12EB6 /* ViewStyle_Extension.swift */; };
 		3AC15809273F043400ECD9BA /* UserDefaults_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -121,6 +122,7 @@
 		3ABCE1002746FFBA00B12EB6 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		3ABCE1022747D0FC00B12EB6 /* StudentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentCollectionViewCell.swift; sourceTree = "<group>"; };
 		3ABCE10427483B7600B12EB6 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		3ABCE10E274A849700B12EB6 /* ViewStyle_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStyle_Extension.swift; sourceTree = "<group>"; };
 		3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults_Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,19 +167,12 @@
 		3A7976D42734BB890070E684 /* GambleToby_Pickup */ = {
 			isa = PBXGroup;
 			children = (
-				3A797722273819DF0070E684 /* DataModels */,
 				3A7976D52734BB890070E684 /* AppDelegate.swift */,
 				3A7976D72734BB890070E684 /* SceneDelegate.swift */,
-				3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */,
-				3A7976D92734BB890070E684 /* HomeViewController.swift */,
-				3A797727273888230070E684 /* SchoolViewController.swift */,
-				3A7977292738B5110070E684 /* RequestViewController.swift */,
-				3A79771C2737FB020070E684 /* SearchViewController.swift */,
-				3A797714273730420070E684 /* SuggestionsTableViewController.swift */,
-				3A7977202738183C0070E684 /* ResultsViewController.swift */,
-				3A797718273740210070E684 /* MKPlacemark_Extension.swift */,
-				3ABCE1002746FFBA00B12EB6 /* CustomTableViewCell.swift */,
-				3ABCE1022747D0FC00B12EB6 /* StudentCollectionViewCell.swift */,
+				3A797722273819DF0070E684 /* DataModels */,
+				3ABCE10B274A7EAE00B12EB6 /* ViewControllers */,
+				3ABCE10C274A7EED00B12EB6 /* Extensions */,
+				3ABCE10D274A7F0C00B12EB6 /* CustomCells */,
 				3A79771A273742CF0070E684 /* Localizable.strings */,
 				3A79771E273809090070E684 /* Schools.json */,
 				3A7976DB2734BB890070E684 /* Main.storyboard */,
@@ -221,6 +216,38 @@
 				3ABCE10427483B7600B12EB6 /* Token.swift */,
 			);
 			path = DataModels;
+			sourceTree = "<group>";
+		};
+		3ABCE10B274A7EAE00B12EB6 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				3A7976D92734BB890070E684 /* HomeViewController.swift */,
+				3A797727273888230070E684 /* SchoolViewController.swift */,
+				3A7977292738B5110070E684 /* RequestViewController.swift */,
+				3A79771C2737FB020070E684 /* SearchViewController.swift */,
+				3A797714273730420070E684 /* SuggestionsTableViewController.swift */,
+				3A7977202738183C0070E684 /* ResultsViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		3ABCE10C274A7EED00B12EB6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3AC15808273F043400ECD9BA /* UserDefaults_Extension.swift */,
+				3A797718273740210070E684 /* MKPlacemark_Extension.swift */,
+				3ABCE10E274A849700B12EB6 /* ViewStyle_Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3ABCE10D274A7F0C00B12EB6 /* CustomCells */ = {
+			isa = PBXGroup;
+			children = (
+				3ABCE1002746FFBA00B12EB6 /* CustomTableViewCell.swift */,
+				3ABCE1022747D0FC00B12EB6 /* StudentCollectionViewCell.swift */,
+			);
+			path = CustomCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -369,6 +396,7 @@
 				3A7976D62734BB890070E684 /* AppDelegate.swift in Sources */,
 				3A797719273740210070E684 /* MKPlacemark_Extension.swift in Sources */,
 				3A79772A2738B5110070E684 /* RequestViewController.swift in Sources */,
+				3ABCE10F274A849700B12EB6 /* ViewStyle_Extension.swift in Sources */,
 				3A7976D82734BB890070E684 /* SceneDelegate.swift in Sources */,
 				3A797724273819F90070E684 /* School.swift in Sources */,
 				3ABCE1012746FFBA00B12EB6 /* CustomTableViewCell.swift in Sources */,

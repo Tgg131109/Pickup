@@ -95,14 +95,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         // Define presentation context from a view in controller hierarchy since the search is presenting a view controller.
         definesPresentationContext = true
-        
-        if !schools.isEmpty {
-            for school in schools {
-                print(school.schoolName)
-            }
-        } else {
-            print("No schools")
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
