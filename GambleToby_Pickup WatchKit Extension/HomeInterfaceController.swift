@@ -47,7 +47,6 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func getData() {
-        print("Get Data")
         // Initialize message data to send to iOS app.
         let myValues:[String: Any] = ["getSchools":true]
 
@@ -59,7 +58,6 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
             // Send message to iOS app, using a reply handler to get reply data.
             session.sendMessage(myValues, replyHandler: {
                 replyData in
-
                 // Ensure reply is being handled on an asyncronous background thread to avoid blocking any other important tasks.
                 DispatchQueue.main.async {
                     // Extract data object.
@@ -95,6 +93,9 @@ class HomeInterfaceController: WKInterfaceController, WCSessionDelegate {
                         } catch {
                             fatalError("Can't unarchive data: \(error)")
                         }
+                    } else {
+                        // Update titleLbl text.
+                        self.instructionLbl.setText("No schools found.\nAdd schools to your profile using the phone app.")
                     }
                 }
             }, errorHandler: nil)

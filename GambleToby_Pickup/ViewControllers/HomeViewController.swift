@@ -19,6 +19,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var instrView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var noSchoolsView: UIView!
+    @IBOutlet weak var noSchoolsAddBtn: UIButton!
     @IBOutlet weak var addBtn: UIButton!
     @IBOutlet weak var cancelBtn: UIButton!
     
@@ -62,8 +63,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cancelBtn.addCornerRadius(shadow: true)
         
         // Uncomment the following lines to clear UserDefaults data.
-//        UserDefaults.standard.removeObject(forKey: "savedSchools")
-//        UserDefaults.standard.synchronize()
+        UserDefaults.standard.removeObject(forKey: "savedSchools")
+        UserDefaults.standard.synchronize()
         
         // Set schools array equal to user's saved schools if they exist.
         if let savedSchools = UserDefaults.standard.school(forKey: "savedSchools") {
@@ -190,9 +191,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         instrView.isHidden = true
         
         // Style capImg.
-        capImg.layer.shadowOpacity = 0.2
-        capImg.layer.shadowRadius = 2
-        capImg.layer.shadowOffset = CGSize(width: 2, height: 4)
+        capImg.tintColor = .systemMint
+        capImg.addShadow()
         
         // Style noSchoolsView.
         noSchoolsView.addCornerRadius(shadow: true)

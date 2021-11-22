@@ -91,6 +91,7 @@ extension AppDelegate: WCSessionDelegate{
                     // This will be unarchived on the receiving end.
                     replyHandler(["schools": data])
                 } else {
+                    replyHandler(["no schools": 0])
                     print("There was an error sending data to watch")
                 }
             }
